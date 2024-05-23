@@ -17,7 +17,7 @@
     </head>
     <body class="font-sans antialiased">
     
-        {{-- <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <livewire:layout.navigation />
 
             <!-- Page Heading -->
@@ -33,13 +33,6 @@
             <main>
                 {{ $slot }}
             </main>
-        </div> --}}
-
-        <div class="antialiased bg-gray-50 dark:bg-gray-900 h-screen"> 
-            {{-- <livewire:layout.navigation /> --}}
-            <livewire:chat-list /> 
-        
-            <livewire:chat-message /> 
         </div>
     </body>
 </html>
