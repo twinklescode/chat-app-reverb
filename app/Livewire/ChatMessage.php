@@ -36,6 +36,8 @@ class ChatMessage extends Component
     public $targetMessageId;
     public $targetMessageText;
 
+    public $isOnline;
+
 
     public function mount()
     {
@@ -124,6 +126,7 @@ class ChatMessage extends Component
         $this->showChat = true;
         $this->message = "";
         $this->dispatch('$refresh');
+        $this->isOnline = true;
         // dd('asd');
         // event(new PushMessage($this->userId1, $this->userId2, 'ENTER'));
 

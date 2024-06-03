@@ -41,7 +41,11 @@
                     </button>
 
                     <div class="flex-shrink-0">
-                        <img class="w-8 h-8 rounded-full" src="https://avatars.githubusercontent.com/u/167683279?v=4" alt="Neil image">
+                        <div class="relative">
+                            <img class="w-10 h-10 rounded-full" src="https://avatars.githubusercontent.com/u/167683279?v=4" alt="">
+                            <span class="bottom-0 left-7 absolute  w-3.5 h-3.5 {{ $isOnline ? 'bg-green-400' : 'bg-red-400' }} border-2 border-white dark:border-gray-800 rounded-full"></span>
+                        </div>
+                        {{-- <img class="w-8 h-8 rounded-full" src="https://avatars.githubusercontent.com/u/167683279?v=4" alt="Neil image"> --}}
                     </div>
                     <div class="flex-1 min-w-0 ms-4">
                         <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -246,15 +250,17 @@
        
         Echo.join(`room.${event.userId1}.${event.userId2}`)
         .here((users) => {
-            console.log('USER HERE',users);
+            console.log('USER HERE',users.length);
             localStorage.setItem("old_channel", `room.${event.userId1}.${event.userId2}`);
         })
         .joining((user) => {
             console.log('USER JOINING',user);
+            $wire.isOnline = true;
         })
         .leaving((user) => {
             console.log('USER LEAVING',user);
             localStorage.setItem("old_channel", null);
+            $wire.isOnline = false;
         })
         .error((error) => {
             console.error(error);
