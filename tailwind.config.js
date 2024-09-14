@@ -35,5 +35,6 @@ export default {
 
     plugins: [forms, require("flowbite/plugin")],
 
-    darkMode: "media",
+    // darkMode: "media",
+    darkMode: 'class',
 };
