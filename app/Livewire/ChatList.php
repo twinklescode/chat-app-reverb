@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Livewire\Actions\Logout;
 use App\Models\Message;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\User;
 
@@ -45,15 +47,25 @@ class ChatList extends Component
         $this->redirect('/', navigate: true);
     }
 
+    // #[On('read-chat')] 
     public function render()
     {
-        $this->models = User::when($this->search!='', function($query){
-            $query->where('name', 'like', '%'.$this->search.'%');
-            $query->orWhere('username', 'like', '%'.$this->search.'%');
-            $query->orWhere('email', 'like', '%'.$this->search.'%');
+        $authId = auth()->id();
+
+        $this->models = User::when($this->search != '', function ($query) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('username', 'like', '%' . $this->search . '%')
+                  ->orWhere('email', 'like', '%' . $this->search . '%');
+            });
         })
-        ->where('id','<>', auth()->user()->id)->limit(50)
-        ->paginate($this->perPage);
+        ->where('id', '<>', $authId)
+        ->withCount(['sentMessages as unread_messages_count' => function (Builder $query) use ($authId) {
+            $query->where('receiver_id', $authId)
+                  ->where('read_status', 'Unread');
+        }])
+        ->limit(10)
+        ->paginate($this->perPage);  
 
         return view('livewire.chat-list', [
             'models' => $this->models

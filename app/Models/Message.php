@@ -14,8 +14,19 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'content',
-        'timestamp'
+        'timestamp',
+        'delivery_status',
+        'read_status',
+        'message_type',
+        'file_name',
+        'file_size',
+        'file_url',
     ];
+
+    public function fileUrl()
+    {
+        return $this->file_url ? asset($this->file_url) : null;
+    }
 
     public function sender()
     {

@@ -42,4 +42,11 @@
             <livewire:chat-message /> 
         </div>
     </body>
+
+<script>
+ setTimeout(function() {
+    initFlowbite() 
+}, 500);
+</script>
+
 </html>

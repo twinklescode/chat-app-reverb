@@ -44,4 +44,50 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getInitialsAttribute(): string
+    {
+        $names = explode(' ', $this->name);
+        $initials = '';
+        
+        foreach ($names as $name) {
+            $initials .= strtoupper(substr($name, 0, 1));
+            if (strlen($initials) >= 2) {
+                break;
+            }
+        }
+        
+        return $initials;
+    }
+
+    public function getAvatarColorAttribute(): string
+    {
+        $colors = [
+            'bg-blue-500', 'bg-green-500', 'bg-purple-500', 
+            'bg-pink-500', 'bg-red-500', 'bg-yellow-500',
+            'bg-indigo-500', 'bg-teal-500'
+        ];
+        
+        $colorIndex = crc32($this->email) % count($colors);
+        return $colors[$colorIndex];
+    }
+
+    public function getAvatarAttribute(): array
+    {
+        return [
+            'initials' => $this->initials,
+            'color' => $this->avatar_color,
+            'size' => 'md' // Can make this configurable
+        ];
+    }
+
+    public function unreadMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id', 'id')->where('read_status', 'Unread');
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id', 'id');
+    }
 }
